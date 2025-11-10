@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat with AI</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #chat-box { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
+    .msg { margin: 5px 0; }
+    .user { font-weight: bold; color: blue; }
+    .ai { font-weight: bold; color: green; }
+  </style>
+</head>
+<body>
+  <h2>Chat with Ollama</h2>
+  <div id="chat-box"></div>
+  <input type="text" id="user-input" placeholder="Type a message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const message = input.value.trim();
+      if (!message) return;
+
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML += `<div class="msg user">You: ${message}</div>`;
+      input.value = "";
+
+      try {
+        const res = await fetch("http://localhost:5000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+        const data = await res.json();
+        chatBox.innerHTML += `<div class="msg ai">AI: ${data.reply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (err) {
+        chatBox.innerHTML += `<div class="msg ai">Error: ${err.message}</div>`;
+      }
+    }
+  </script>
+</body>
+</html>

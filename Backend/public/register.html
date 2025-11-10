@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+      margin: 0;
+    }
+    .form-container {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-container label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .form-container input, .form-container textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .form-container button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .form-container button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register</h2>
+    <form id="registerForm">
+      <label for="userName">User Name *</label>
+      <input type="text" id="userName" name="userName" required>
+
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password *</label>
+      <input type="password" id="password" name="password" required>
+
+      <label for="phone">Phone *</label>
+      <input type="text" id="phone" name="phone" required>
+
+      <label for="answer">Security Answer *</label>
+      <input type="text" id="answer" name="answer" required>
+
+      <label for="address">Address (optional)</label>
+      <textarea id="address" name="address" rows="2"></textarea>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const userData = {
+        userName: document.getElementById("userName").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        phone: document.getElementById("phone").value,
+        answer: document.getElementById("answer").value,
+        address: document.getElementById("address").value ? [document.getElementById("address").value] : []
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("✅ Registered successfully! Please login.");
+          window.location.href = "login.html";
+        } else {
+          alert("❌ Error: " + (result.message || "Registration failed"));
+        }
+      } catch (error) {
+        console.error("Error during registration:", error);
+        alert("⚠️ Something went wrong. Check console.");
+      }
+    });
+  </script>
+</body>
+</html>

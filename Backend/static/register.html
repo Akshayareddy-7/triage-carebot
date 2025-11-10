@@ -1,0 +1,111 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <script>
+    async function handleRegister(e) {
+      e.preventDefault();
+
+      const data = {
+        userName: document.getElementById("userName").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        address: document.getElementById("address").value.split(","), // convert into array
+        phone: document.getElementById("phone").value,
+        answer: document.getElementById("answer").value
+      };
+
+      try {
+        const res = await fetch("http://localhost:8080/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          alert("Registration successful! Redirecting to login...");
+          window.location.href = "login.html"; // 👈 go to login page
+        } else {
+          const err = await res.json();
+          alert("Error: " + err.message);
+        }
+      } catch (error) {
+        alert("Something went wrong: " + error.message);
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>Register</h2>
+  <form onsubmit="handleRegister(event)">
+    <label>User Name:</label><br>
+    <input type="text" id="userName" required><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" id="email" required><br><br>
+
+    <label>Password:</label><br>
+    <input type="password" id="password" required><br><br>
+
+    <label>Address (comma separated):</label><br>
+    <input type="text" id="address"><br><br>
+
+    <label>Phone:</label><br>
+    <input type="text" id="phone" required><br><br>
+
+    <label>Security Answer:</label><br>
+    <input type="text" id="answer" required><br><br>
+
+    <button type="submit">Register</button>
+  </form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register</title>
+</head>
+<body>
+  <h2>Register</h2>
+  <form id="registerForm">
+    <input type="text" name="userName" placeholder="Username" required><br>
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+    <input type="text" name="phone" placeholder="Phone" required><br>
+    <input type="text" name="answer" placeholder="Security Answer" required><br>
+    <button type="submit">Register</button>
+  </form>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = {
+        userName: e.target.userName.value,
+        email: e.target.email.value,
+        password: e.target.password.value,
+        phone: e.target.phone.value,
+        answer: e.target.answer.value,
+      };
+
+      try {
+        const res = await fetch("http://localhost:8080/api/v1/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await res.json();
+        alert(data.message);
+
+        if (res.status === 201 || data.message === "User already exists") {
+          window.location.href = "login.html";
+        }
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
