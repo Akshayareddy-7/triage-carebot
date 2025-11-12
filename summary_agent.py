@@ -3,7 +3,7 @@ import requests
 import json
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL_NAME = "mistral:latest"  
+MODEL_NAME = "phi3:mini"  
 
 def generate_summary(conversation):
     """

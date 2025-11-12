@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
-MODEL_NAME = os.getenv("MODEL_NAME", "mistral")
+MODEL_NAME = os.getenv("MODEL_NAME", "phi3:mini")
 APP_PORT = int(os.getenv("APP_PORT", 8000))
 
 # simple logger

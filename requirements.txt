@@ -8,3 +8,4 @@ uvicorn[standard]
 pymongo
 python-jose[cryptography]
 passlib[bcrypt]
+flask-cors==4.0.0
